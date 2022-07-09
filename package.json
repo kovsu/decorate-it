@@ -13,6 +13,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.1",
+    "@vueuse/core": "^8.9.1",
     "typeit": "^8.6.1-alpha.0",
     "vue": "^3.2.25"
   },

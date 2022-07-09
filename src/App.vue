@@ -1,11 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TheHeader from "./components/TheHeader.vue";
+</script>
 
 <template>
-  <h1>Hello world</h1>
+  <TheHeader></TheHeader>
 </template>
 
 <style lang="scss">
-h1 {
-  color: #fff;
+@import "./styles/main.scss";
+
+html.dark {
+  background-color: #111;
+}
+
+html.light {
+  background-color: #fff;
 }
 </style>
