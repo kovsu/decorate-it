@@ -4,27 +4,20 @@ import ShowContainer from "./ShowContainer.vue";
 
 import { isDark } from "../composables/data";
 import TypeIt from "typeit";
-import { onMounted, onUpdated, ref, watch } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 
 const block = ref<HTMLPreElement>();
-const paused = ref(false);
 const code = ref("");
-
-function pause() {
-  paused.value = true;
-}
-
-function resume() {
-  paused.value = false;
-}
 
 onMounted(() => {
   new (TypeIt as any)(block.value, {
-    speed: 50,
+    speed: 100,
     startDelay: 900,
     afterStep: () => {
       code.value = JSON.parse(
-        JSON.stringify(block.value!.innerText.replace("|", ""))
+        JSON.stringify(
+          block.value!.innerText.replaceAll(String.fromCharCode(160), "")
+        )
       );
     },
   })
@@ -32,57 +25,54 @@ onMounted(() => {
       delay: 400,
     })
     .move(-1, {
-      speed: 0,
+      delay: 100,
     })
-    .type("<br><br>", {
-      delay: 400,
-    })
+    .break()
+    .break()
     .move(-1, {
-      speed: 0,
+      delay: 100,
     })
-    .type(
-      `
-        &nbsp;&nbsp;display: flex;<br>
-        &nbsp;&nbsp;gap: 2rem;<br>
-        &nbsp;&nbsp;justify-content: center;<br>
-        &nbsp;&nbsp;align-items: center;
-      `
-    )
+    .type("&nbsp;&nbsp;display: flex;")
+    .break()
+    .type("&nbsp;&nbsp;gap: 2rem;")
+    .break()
+    .type("&nbsp;&nbsp;justify-content: center;")
+    .break()
+    .type("&nbsp;&nbsp;align-items: center;")
     .move(2)
-    .type(`<br>- - - - - - - - - - - - - - - - - -<br>`)
-    .exec(pause)
-    .exec(resume)
-    .type(`<br>.user__name {}`, { delay: 400 })
+    .pause(500)
+    .break()
+    .break()
+    .type(`.user__name {}`, { delay: 400 })
     .move(-1)
-    .type(`<br><br>`)
+    .break()
+    .break()
     .move(-1)
-    .type(
-      ` &nbsp;&nbsp;font-size: 1.8rem;<br>
-      &nbsp;&nbsp; margin-bottom: 2rem;`
-    )
+    .type("&nbsp;&nbsp;font-size: 1.8rem;")
+    .break()
+    .type(`&nbsp;&nbsp;margin-bottom: 2rem;`)
     .move(2)
-    .type(`<br>- - - - - - - - - - - - - - - - - -<br>`)
-    .exec(pause)
-    .exec(resume)
-    .type(`<br>.user__avator img {}`, { delay: 400 })
+    .pause(500)
+    .break()
+    .break()
+    .type(`.user__avator img {}`, { delay: 400 })
     .move(-1)
-    .type(`<br><br>`)
+    .break()
+    .break()
     .move(-1)
-    .type(
-      ` &nbsp;&nbsp;width: 12rem;<br>
-      &nbsp;&nbsp;height: 12rem;<br>
-      &nbsp;&nbsp;object-fit: cover;<br>
-      &nbsp;&nbsp;border-radius: 50%;
-      `
-    )
+    .type("&nbsp;&nbsp;width: 12rem;")
+    .break()
+    .type("&nbsp;&nbsp;height: 12rem;")
+    .break()
+    .type("&nbsp;&nbsp;object-fit: cover;")
+    .break()
+    .type(`&nbsp;&nbsp;border-radius: 50%;`)
     .move(2)
-    .exec(pause)
-    .exec(resume)
+    .pause(500)
     .go();
 });
 
 onUpdated(() => {
-  console.log("---");
   block.value!.scrollTop = block.value!.scrollHeight;
 });
 </script>
@@ -96,7 +86,8 @@ onUpdated(() => {
       </header>
       <div class="type__content" ref="block"></div>
     </div>
-    <ShowContainer :cssStyle="code" :paused="paused"></ShowContainer>
+    <ShowContainer></ShowContainer>
+    <component is="style"> {{ code }} </component>
   </main>
 </template>
 
